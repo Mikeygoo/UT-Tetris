@@ -17,7 +17,7 @@ public final class TetrisPiece extends Piece {
     //private TetrisPiece next;
     private int width, height;
     private int[] skirt;
-    
+
     /**
        Defines a new piece given the Points that make up its body.
        Makes its own copy of the array and the Point inside it.
@@ -28,15 +28,15 @@ public final class TetrisPiece extends Piece {
     */
     public TetrisPiece(Point[] points) {
         this.points = points;
-        
+
         for (Point p : points) {
             if (width <= p.x)
                 width = p.x + 1;
-            
+
             if (height <= p.y)
                 height = p.y + 1;
         }
-        
+
         skirt = new int[width];
         Arrays.fill(skirt, Integer.MAX_VALUE);
         for (Point p : points) {
@@ -103,14 +103,14 @@ public final class TetrisPiece extends Piece {
     public boolean equals(Piece other) {
         if (other.getBody().length != points.length || other.getWidth() != width || other.getHeight() != height)
             return false;
-        
+
         HashSet<Point> pset = new HashSet<>();
         pset.addAll(Arrays.asList(points));
-        
+
         for (Point p : other.getBody())
             if (!pset.remove(p))
                 return false;
-        
+
         return true;
     }
 
@@ -128,18 +128,15 @@ public final class TetrisPiece extends Piece {
     */
     public static Piece[] getPieces() {
         if (pieces == null) {
-            Piece[] pieces = new Piece[7];
-            
+            pieces = new Piece[7];
+
             for (int i = 0; i < pieceStrings.length; i++) {
                 String pieceString = pieceStrings[i];
                 Point[] body = parsePoints(pieceString);
                 pieces[i] = createRotations(body);
             }
-
-            return TetrisPiece.pieces = pieces;
-        } else {
-            return TetrisPiece.pieces;
         }
+        return pieces;
     }
 
     private static Piece createRotations(Point[] originalBody) {
@@ -147,18 +144,18 @@ public final class TetrisPiece extends Piece {
         TetrisPiece last = initial;
         TetrisPiece current = initial;
         while (true) {
+            int height = current.getHeight();
             Point[] oldBody = current.getBody();
             Point[] newBody = new Point[oldBody.length];
             for (int i = 0; i < newBody.length; i++) {
-                newBody[i] = new Point(-oldBody[i].y + current.getHeight() - 1, oldBody[i].x);
+                Point oldpoint = oldBody[i];
+                newBody[i] = new Point(-oldpoint.y + height - 1, oldpoint.x);
             }
             current = new TetrisPiece(newBody);
             if (current.equals(initial)) {
                 last.setNext(initial);
-                //System.out.println("done");
                 break;
             } else {
-                //System.out.println("rotating...");
                 last.setNext(current);
             }
             last = current;

@@ -16,7 +16,8 @@ import java.util.*;
    @version	1.0.1, Sep 19, 2004
 */
 public class TetrisBoard implements Board {
-
+    private boolean[][] grid;
+    private int width, height;
     private boolean DEBUG = true;
 
 
@@ -24,8 +25,10 @@ public class TetrisBoard implements Board {
        Creates an empty board of the given width and height
        measured in blocks.
     */
-    public TetrisBoard(int Width, int Height) {
-        // your code here
+    public TetrisBoard(int width, int height) {
+        grid = new boolean[width][height];
+        this.width = width;
+        this.height = height;
     }
 
 
@@ -33,8 +36,7 @@ public class TetrisBoard implements Board {
        Returns the width of the board in blocks.
     */
     public int getWidth() {
-        // your code here
-        return -1;
+        return width;
     }
 
 
@@ -42,8 +44,7 @@ public class TetrisBoard implements Board {
        Returns the height of the board in blocks.
     */
     public int getHeight() {
-        // your code here
-        return -1;
+        return height;
     }
 
 
@@ -109,8 +110,9 @@ public class TetrisBoard implements Board {
        always return true.
     */
     public final boolean getGrid(int x, int y) {
-        // your code here
-        return false;
+        if (x < 0 || y < 0 || x >= width || y >= height)
+            return true;
+        return grid[x][y];
     }
 
 
@@ -134,8 +136,22 @@ public class TetrisBoard implements Board {
        remove the bad placement.
     */
     public int place(Piece piece, int x, int y) {
-        // your code here
-        return -1;
+        if (primed) {
+            //todo: error case omg?
+        }
+        prime();
+        for (Point p : piece.getBody()) {
+            if (getGrid(x + p.x, y + p.y)) {
+                if (outOfBounds(x + p.x, y + p.y)) {
+                    return PLACE_OUT_BOUNDS;
+                } else {
+                    return PLACE_BAD;
+                }
+            } else {
+                grid[x + p.x][y + p.y] = true;
+            }
+        }
+        return foundRowFilled() ? PLACE_ROW_FILLED : PLACE_OK;
     }
 
     /**

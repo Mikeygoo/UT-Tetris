@@ -18,7 +18,6 @@ class JPieceTest extends JComponent {
     protected Piece root;
     protected Font font;
 
-
     public JPieceTest(Piece piece, int width, int height) {
         super(); //(obviously?)
 
@@ -36,7 +35,7 @@ class JPieceTest extends JComponent {
     public void paintComponent(Graphics g) {
         int x = 0, y = 0;
         int BOX_WIDTH = getWidth() / MAX_ROTATIONS, BOX_HEIGHT = getHeight();
-        
+
         Piece currentRotation = root;
         do {
             drawPiece(g, currentRotation, new Rectangle(x, y, BOX_WIDTH, BOX_HEIGHT));
@@ -49,7 +48,7 @@ class JPieceTest extends JComponent {
     */
     private void drawPiece(Graphics g, Piece piece, Rectangle r) {
         int[] skirt = piece.getSkirt();
-        int blockwidth = (int) (r.getWidth() / 4), blockheight = (int) (r.getHeight() / 4); 
+        int blockwidth = (int) (r.getWidth() / 4), blockheight = (int) (r.getHeight() / 4);
         for (Point p : piece.getBody()) {
             if (skirt[p.x] == p.y)
                 g.setColor(Color.yellow);
@@ -69,9 +68,7 @@ class JPieceTest extends JComponent {
        Draws all the pieces by creating a JPieceTest for
        each piece, and putting them all in a frame.
     */
-    static public void main(String[] args)
-
-    {
+    static public void main(String[] args) {
         JFrame frame = new JFrame("Piece Tester");
         JComponent container = (JComponent)frame.getContentPane();
 
