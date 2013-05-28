@@ -25,8 +25,8 @@ public interface Brain {
        If the passed in move is non-null, it is used to hold the
        result (just to save the memory allocation).
     */
-    public Brain.Move bestMove(Board board, 
-                               Piece piece, 
-                               int limitHeight, 
+    public Brain.Move bestMove(Board board,
+                               Piece piece,
+                               int limitHeight,
                                Brain.Move move);
 }

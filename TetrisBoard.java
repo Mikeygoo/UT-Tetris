@@ -25,7 +25,7 @@ public class TetrisBoard implements Board {
        measured in blocks.
     */
     public TetrisBoard(int Width, int Height) {
-	// your code here
+        // your code here
     }
 
 
@@ -33,8 +33,8 @@ public class TetrisBoard implements Board {
        Returns the width of the board in blocks.
     */
     public int getWidth() {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -42,8 +42,8 @@ public class TetrisBoard implements Board {
        Returns the height of the board in blocks.
     */
     public int getHeight() {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -52,8 +52,8 @@ public class TetrisBoard implements Board {
        For an empty board this is 0.
     */
     public int getMaxHeight() {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -62,9 +62,9 @@ public class TetrisBoard implements Board {
        for debugging.
     */
     public void sanityCheck() {
-	if (DEBUG) {
-	    // consistency check the board state
-	}
+        if (DEBUG) {
+            // consistency check the board state
+        }
     }
 
     /**
@@ -77,8 +77,8 @@ public class TetrisBoard implements Board {
        to compute this fast -- O(skirt length).
     */
     public int dropHeight(Piece piece, int x) {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -88,8 +88,8 @@ public class TetrisBoard implements Board {
        The height is 0 if the column contains no blocks.
     */
     public int getColumnHeight(int x) {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -98,8 +98,8 @@ public class TetrisBoard implements Board {
        the given row.
     */
     public int getRowWidth(int y) {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
 
@@ -109,8 +109,8 @@ public class TetrisBoard implements Board {
        always return true.
     */
     public final boolean getGrid(int x, int y) {
-	// your code here
-	return false;
+        // your code here
+        return false;
     }
 
 
@@ -125,7 +125,7 @@ public class TetrisBoard implements Board {
        Returns PLACE_OK for a regular placement, or PLACE_ROW_FILLED
        for a regular placement that causes at least one row to be filled.
 
-       Error cases: 
+       Error cases:
        If part of the piece would fall out of bounds, the placement
        does not change the board at all, and PLACE_OUT_BOUNDS is
        returned.  If the placement is "bad" --interfering with
@@ -134,8 +134,8 @@ public class TetrisBoard implements Board {
        remove the bad placement.
     */
     public int place(Piece piece, int x, int y) {
-	// your code here
-	return -1;
+        // your code here
+        return -1;
     }
 
     /**
@@ -148,8 +148,8 @@ public class TetrisBoard implements Board {
        Note that more than one row may be filled.
     */
     public boolean clearRows() {
-	// your code here
-	return false;
+        // your code here
+        return false;
     }
 
 
@@ -162,7 +162,7 @@ public class TetrisBoard implements Board {
        See the overview docs.
     */
     public void undo() {
-	// your code here
+        // your code here
     }
 
 
@@ -171,6 +171,6 @@ public class TetrisBoard implements Board {
        See the overview docs.
     */
     public void commit() {
-	// your code here
+        // your code here
     }
 }

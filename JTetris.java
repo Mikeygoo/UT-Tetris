@@ -85,104 +85,104 @@ public class JTetris extends JComponent {
 
 
     JTetris(int width, int height) {
-	super();
+        super();
 
-	setPreferredSize(new Dimension(width, height));
-	gameOn = false;
+        setPreferredSize(new Dimension(width, height));
+        gameOn = false;
 
-	pieces = TetrisPiece.getPieces();
-	board = new TetrisBoard(WIDTH, HEIGHT + TOP_SPACE);
-
-
-	/*
-	  Register key handlers that call
-	  tick with the appropriate constant.
-	  e.g. 'j' and '4'  call tick(LEFT)
-	*/
-
-	// LEFT
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(LEFT);
-				   }
-			       }, "left", KeyStroke.getKeyStroke('4'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(LEFT);
-				   }
-			       }, "left", KeyStroke.getKeyStroke('j'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
+        pieces = TetrisPiece.getPieces();
+        board = new TetrisBoard(WIDTH, HEIGHT + TOP_SPACE);
 
 
-	// RIGHT
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(RIGHT);
-				   }
-			       }, "right", KeyStroke.getKeyStroke('6'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(RIGHT);
-				   }
-			       }, "right", KeyStroke.getKeyStroke('l'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
+        /*
+          Register key handlers that call
+          tick with the appropriate constant.
+          e.g. 'j' and '4'  call tick(LEFT)
+        */
+
+        // LEFT
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(LEFT);
+            }
+        }, "left", KeyStroke.getKeyStroke('4'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(LEFT);
+            }
+        }, "left", KeyStroke.getKeyStroke('j'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
 
 
-	// ROTATE
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(ROTATE);
-				   }
-			       }, "rotate", KeyStroke.getKeyStroke('5'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(ROTATE);
-				   }
-			       }, "rotate", KeyStroke.getKeyStroke('k'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
+        // RIGHT
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(RIGHT);
+            }
+        }, "right", KeyStroke.getKeyStroke('6'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(RIGHT);
+            }
+        }, "right", KeyStroke.getKeyStroke('l'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
 
 
-	// DROP
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(DROP);
-				   }
-			       }, "drop", KeyStroke.getKeyStroke('0'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
-	registerKeyboardAction(
-			       new ActionListener() {
-				   public void actionPerformed(ActionEvent e) {
-				       tick(DROP);
-				   }
-			       }, "drop", KeyStroke.getKeyStroke('n'), 
-			       WHEN_IN_FOCUSED_WINDOW
-			       );
+        // ROTATE
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(ROTATE);
+            }
+        }, "rotate", KeyStroke.getKeyStroke('5'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(ROTATE);
+            }
+        }, "rotate", KeyStroke.getKeyStroke('k'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
 
 
-	// Create the Timer object and have it send
-	// tick(DOWN) periodically
-	timer = new javax.swing.Timer(DELAY, new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tick(DOWN);
-		}
-	    });
+        // DROP
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(DROP);
+            }
+        }, "drop", KeyStroke.getKeyStroke('0'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
+        registerKeyboardAction(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(DROP);
+            }
+        }, "drop", KeyStroke.getKeyStroke('n'),
+        WHEN_IN_FOCUSED_WINDOW
+        );
+
+
+        // Create the Timer object and have it send
+        // tick(DOWN) periodically
+        timer = new javax.swing.Timer(DELAY, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tick(DOWN);
+            }
+        });
     }
 
     /**
@@ -190,23 +190,23 @@ public class JTetris extends JComponent {
        so the game is happening.
     */
     public void startGame() {
-	// cheap way to reset the board state
-	board = new TetrisBoard(WIDTH, HEIGHT + TOP_SPACE);
+        // cheap way to reset the board state
+        board = new TetrisBoard(WIDTH, HEIGHT + TOP_SPACE);
 
-	// draw the new board state once
-	repaint();
+        // draw the new board state once
+        repaint();
 
-	count = 0;
-	gameOn = true;
+        count = 0;
+        gameOn = true;
 
-	if (testMode) random = new Random(0);	// same seq every time
-	else random = new Random();	// diff seq each game
+        if (testMode) random = new Random(0);	// same seq every time
+        else random = new Random();	// diff seq each game
 
-	enableButtons();
-	timeLabel.setText(" ");
-	addNewPiece();
-	timer.start();
-	startTime = System.currentTimeMillis();
+        enableButtons();
+        timeLabel.setText(" ");
+        addNewPiece();
+        timer.start();
+        startTime = System.currentTimeMillis();
     }
 
 
@@ -215,20 +215,20 @@ public class JTetris extends JComponent {
        based on the gameOn state.
     */
     private void enableButtons() {
-	startButton.setEnabled(!gameOn);
-	stopButton.setEnabled(gameOn);
+        startButton.setEnabled(!gameOn);
+        stopButton.setEnabled(gameOn);
     }
 
     /**
        Stops the game.
     */
     public void stopGame() {
-	gameOn = false;
-	enableButtons();
-	timer.stop();
+        gameOn = false;
+        enableButtons();
+        timer.stop();
 
-	long delta = (System.currentTimeMillis() - startTime)/10;
-	timeLabel.setText(Double.toString(delta/100.0) + " seconds");
+        long delta = (System.currentTimeMillis() - startTime)/10;
+        timeLabel.setText(Double.toString(delta/100.0) + " seconds");
 
     }
 
@@ -243,24 +243,24 @@ public class JTetris extends JComponent {
        Returns the same error code as Board.place().
     */
     public int setCurrent(Piece piece, int x, int y) {
-	int result = board.place(piece, x, y);
+        int result = board.place(piece, x, y);
 
-	if (result <= Board.PLACE_ROW_FILLED) {	// SUCESS
-	    // repaint the rect where it used to be
-	    if (currentPiece != null) 
-	        repaintPiece(currentPiece, currentX, currentY);
+        if (result <= Board.PLACE_ROW_FILLED) {	// SUCESS
+            // repaint the rect where it used to be
+            if (currentPiece != null)
+                repaintPiece(currentPiece, currentX, currentY);
 
-	    currentPiece = piece;
-	    currentX = x;
-	    currentY = y;
-	    // repaint the rect where it is now
-	    repaintPiece(currentPiece, currentX, currentY);
-	}
-	else {
-	    board.undo();
-	}
+            currentPiece = piece;
+            currentX = x;
+            currentY = y;
+            // repaint the rect where it is now
+            repaintPiece(currentPiece, currentX, currentY);
+        }
+        else {
+            board.undo();
+        }
 
-	return(result);
+        return(result);
     }
 
 
@@ -269,13 +269,13 @@ public class JTetris extends JComponent {
        set in startGame().
     */
     public Piece pickNextPiece() {
-	int pieceNum;
+        int pieceNum;
 
-	pieceNum = (int) (pieces.length * random.nextDouble());
+        pieceNum = (int) (pieces.length * random.nextDouble());
 
-	Piece piece  = pieces[pieceNum];
+        Piece piece  = pieces[pieceNum];
 
-	return(piece);
+        return(piece);
     }
 
 
@@ -284,34 +284,34 @@ public class JTetris extends JComponent {
        Ends the game if it's not possible.
     */
     public void addNewPiece() {
-	count++;
+        count++;
 
-	if (testMode && count == TEST_LIMIT+1) {
-	    stopGame();
-	    return;
-	}
+        if (testMode && count == TEST_LIMIT+1) {
+            stopGame();
+            return;
+        }
 
-	Piece piece = pickNextPiece();
+        Piece piece = pickNextPiece();
 
-	// Center it up at the top
-	int px = (board.getWidth() - piece.getWidth())/2;
-	int py = board.getHeight() - piece.getHeight();
+        // Center it up at the top
+        int px = (board.getWidth() - piece.getWidth())/2;
+        int py = board.getHeight() - piece.getHeight();
 
         // commit things the way they are
         board.commit();
-	currentPiece = null;
+        currentPiece = null;
 
-	// add the new piece to be in play
-	int result = setCurrent(piece, px, py);
+        // add the new piece to be in play
+        int result = setCurrent(piece, px, py);
 
-	// This probably never happens, since
-	// the blocks at the top allow space
-	// for new pieces to at least be added.
-	if (result>Board.PLACE_ROW_FILLED) {
-	    stopGame();
-	}
+        // This probably never happens, since
+        // the blocks at the top allow space
+        // for new pieces to at least be added.
+        if (result>Board.PLACE_ROW_FILLED) {
+            stopGame();
+        }
 
-	countLabel.setText(Integer.toString(count));
+        countLabel.setText(Integer.toString(count));
     }
 
 
@@ -329,37 +329,43 @@ public class JTetris extends JComponent {
        ivars is a little tacky.)
     */
     public void computeNewPosition(int verb) {
-	// As a starting point, the new position is the same as the old
-	newPiece = currentPiece;
-	newX = currentX;
-	newY = currentY;
+        // As a starting point, the new position is the same as the old
+        newPiece = currentPiece;
+        newX = currentX;
+        newY = currentY;
 
-	// Make changes based on the verb
-	switch (verb) {
-	case LEFT: newX--; break;
+        // Make changes based on the verb
+        switch (verb) {
+        case LEFT:
+            newX--;
+            break;
 
-	case RIGHT: newX++; break;
+        case RIGHT:
+            newX++;
+            break;
 
-	case ROTATE:
-	    newPiece = newPiece.nextRotation();
+        case ROTATE:
+            newPiece = newPiece.nextRotation();
 
-	    // tricky: make the piece appear to rotate about its center
-	    // can't just leave it at the same lower-left origin as the
-	    // previous piece.
-	    newX = newX + (currentPiece.getWidth() - newPiece.getWidth())/2;
-	    newY = newY + (currentPiece.getHeight() - newPiece.getHeight())/2;
-	    break;
+            // tricky: make the piece appear to rotate about its center
+            // can't just leave it at the same lower-left origin as the
+            // previous piece.
+            newX = newX + (currentPiece.getWidth() - newPiece.getWidth())/2;
+            newY = newY + (currentPiece.getHeight() - newPiece.getHeight())/2;
+            break;
 
-	case DOWN: newY--; break;
+        case DOWN:
+            newY--;
+            break;
 
-	case DROP:
-	    // note: if the piece were in the board, it would interfere here
-	    newY = board.dropHeight(newPiece, newX);
-	    break;
+        case DROP:
+            // note: if the piece were in the board, it would interfere here
+            newY = board.dropHeight(newPiece, newX);
+            break;
 
-	default:
-	    throw new RuntimeException("Bad verb");
-	}
+        default:
+            throw new RuntimeException("Bad verb");
+        }
 
     }
 
@@ -384,58 +390,58 @@ public class JTetris extends JComponent {
        Overriden by the brain when it plays.
     */
     public void tick(int verb) {
-	if (!gameOn) return;
+        if (!gameOn) return;
 
-	if (currentPiece != null) {
-	    board.undo();	// remove the piece from its old position
-	}
+        if (currentPiece != null) {
+            board.undo();	// remove the piece from its old position
+        }
 
-	// Sets the newXXX ivars
-	computeNewPosition(verb);
+        // Sets the newXXX ivars
+        computeNewPosition(verb);
 
-	// try out the new position (rolls back if it doesn't work)
-	int result = setCurrent(newPiece, newX, newY);
+        // try out the new position (rolls back if it doesn't work)
+        int result = setCurrent(newPiece, newX, newY);
 
-	// if row clearing is going to happen, draw the
-	// whole board so the green row shows up
-	if (result ==  Board.PLACE_ROW_FILLED) repaint();
+        // if row clearing is going to happen, draw the
+        // whole board so the green row shows up
+        if (result ==  Board.PLACE_ROW_FILLED) repaint();
 
 
 
-	boolean failed = (result >= Board.PLACE_OUT_BOUNDS);
+        boolean failed = (result >= Board.PLACE_OUT_BOUNDS);
 
-	// if it didn't work, put it back the way it was
-	if (failed) {
-	    if (currentPiece != null) 
-		board.place(currentPiece, currentX, currentY);
-	}
+        // if it didn't work, put it back the way it was
+        if (failed) {
+            if (currentPiece != null)
+                board.place(currentPiece, currentX, currentY);
+        }
 
-	/*
-	  How to detect when a piece has landed:
-	  if this move hits something on its DOWN verb,
-	  and the previous verb was also DOWN (i.e. the player was not
-	  still moving it),  then the previous position must be the correct
-	  "landed" position, so we're done with the falling of this piece.
-	*/
-	if (failed && verb==DOWN && !moved) {	// it's landed
+        /*
+          How to detect when a piece has landed:
+          if this move hits something on its DOWN verb,
+          and the previous verb was also DOWN (i.e. the player was not
+          still moving it),  then the previous position must be the correct
+          "landed" position, so we're done with the falling of this piece.
+        */
+        if (failed && verb==DOWN && !moved) {	// it's landed
 
-	    if (board.clearRows()) {
-		repaint();	// repaint to show the result of row clearing
-	    }
+            if (board.clearRows()) {
+                repaint();	// repaint to show the result of row clearing
+            }
 
-	    // if the board is too tall, we've lost
-	    if (board.getMaxHeight() > board.getHeight() - TOP_SPACE) {
-		stopGame();
-	    }
-	    // Otherwise add a new piece and keep playing
-	    else {
-		addNewPiece();
-	    }
-	}
+            // if the board is too tall, we've lost
+            if (board.getMaxHeight() > board.getHeight() - TOP_SPACE) {
+                stopGame();
+            }
+            // Otherwise add a new piece and keep playing
+            else {
+                addNewPiece();
+            }
+        }
 
-	// Note if the player made a successful non-DOWN move --
-	// used to detect if the piece has landed on the next tick()
-	moved = (!failed && verb!=DOWN);
+        // Note if the player made a successful non-DOWN move --
+        // used to detect if the piece has landed on the next tick()
+        moved = (!failed && verb!=DOWN);
     }
 
 
@@ -445,17 +451,17 @@ public class JTetris extends JComponent {
        a repaint for the rectangle that just encloses the piece.
     */
     public void repaintPiece(Piece piece, int x, int y) {
-	if (DRAW_OPTIMIZE) {
-	    int px = xPixel(x);
-	    int py = yPixel(y + piece.getHeight() - 1);
-	    int pwidth = xPixel(x+piece.getWidth()) - px;
-	    int pheight = yPixel(y-1) - py;
+        if (DRAW_OPTIMIZE) {
+            int px = xPixel(x);
+            int py = yPixel(y + piece.getHeight() - 1);
+            int pwidth = xPixel(x+piece.getWidth()) - px;
+            int pheight = yPixel(y-1) - py;
 
-	    repaint(px, py, pwidth, pheight);
-	}
-	else {
-	    repaint();
-	}
+            repaint(px, py, pwidth, pheight);
+        }
+        else {
+            repaint();
+        }
     }
 
 
@@ -474,22 +480,22 @@ public class JTetris extends JComponent {
 
     // width in pixels of a block
     private final float dX() {
-	return( ((float)(getWidth()-2)) / board.getWidth() );
+        return( ((float)(getWidth()-2)) / board.getWidth() );
     }
 
     // height in pixels of a block
     private final float dY() {
-	return( ((float)(getHeight()-2)) / board.getHeight() );
+        return( ((float)(getHeight()-2)) / board.getHeight() );
     }
 
     // the x pixel coord of the left side of a block
     private final int xPixel(int x) {
-	return(Math.round(1 + (x * dX())));
+        return(Math.round(1 + (x * dX())));
     }
 
     // the y pixel coord of the top of a block
     private final int yPixel(int y) {
-	return(Math.round(getHeight() -1 - (y+1)*dY()));
+        return(Math.round(getHeight() -1 - (y+1)*dY()));
     }
 
 
@@ -501,57 +507,57 @@ public class JTetris extends JComponent {
     */
     public void paintComponent(Graphics g) {
 
-	// Draw a rect around the whole thing
-	g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+        // Draw a rect around the whole thing
+        g.drawRect(0, 0, getWidth()-1, getHeight()-1);
 
 
-	// Draw the line separating the top
-	int spacerY = yPixel(board.getHeight() - TOP_SPACE - 1);
-	g.drawLine(0, spacerY, getWidth()-1, spacerY);
+        // Draw the line separating the top
+        int spacerY = yPixel(board.getHeight() - TOP_SPACE - 1);
+        g.drawLine(0, spacerY, getWidth()-1, spacerY);
 
 
         // check if we are drawing with clipping
-	//Shape shape = g.getClip();
-	Rectangle clip = null;
-	if (DRAW_OPTIMIZE) {
-	    clip = g.getClipBounds();
-	}
+        //Shape shape = g.getClip();
+        Rectangle clip = null;
+        if (DRAW_OPTIMIZE) {
+            clip = g.getClipBounds();
+        }
 
 
 
-	// Factor a few things out to help the optimizer
-	final int dx = Math.round(dX()-2);
-	final int dy = Math.round(dY()-2);
-	final int bWidth = board.getWidth();
-	final int bHeight = board.getHeight();
+        // Factor a few things out to help the optimizer
+        final int dx = Math.round(dX()-2);
+        final int dy = Math.round(dY()-2);
+        final int bWidth = board.getWidth();
+        final int bHeight = board.getHeight();
 
-	int x, y;
-	// Loop through and draw all the blocks
-	// left-right, bottom-top
-	for (x=0; x<bWidth; x++) {
-	    int left = xPixel(x);	// the left pixel
+        int x, y;
+        // Loop through and draw all the blocks
+        // left-right, bottom-top
+        for (x=0; x<bWidth; x++) {
+            int left = xPixel(x);	// the left pixel
 
-	    // right pixel (useful for clip optimization)
-	    int right = xPixel(x+1) -1;
+            // right pixel (useful for clip optimization)
+            int right = xPixel(x+1) -1;
 
-	    // skip this x if it is outside the clip rect
-	    if (DRAW_OPTIMIZE && clip!=null) {
-		if ((right<clip.x) || (left>=(clip.x+clip.width))) continue;
-	    }
+            // skip this x if it is outside the clip rect
+            if (DRAW_OPTIMIZE && clip!=null) {
+                if ((right<clip.x) || (left>=(clip.x+clip.width))) continue;
+            }
 
-	    // draw from 0 up to the col height
-	    final int yHeight = board.getColumnHeight(x);
-	    for (y=0; y<yHeight; y++) {
-		if (board.getGrid(x, y)) {
-		    final boolean filled = (board.getRowWidth(y)==bWidth);
-		    if (filled) g.setColor(Color.green);
-		    // +1 to leave a white border
-		    g.fillRect(left+1, yPixel(y)+1, dx, dy);
+            // draw from 0 up to the col height
+            final int yHeight = board.getColumnHeight(x);
+            for (y=0; y<yHeight; y++) {
+                if (board.getGrid(x, y)) {
+                    final boolean filled = (board.getRowWidth(y)==bWidth);
+                    if (filled) g.setColor(Color.green);
+                    // +1 to leave a white border
+                    g.fillRect(left+1, yPixel(y)+1, dx, dy);
 
-		    if (filled) g.setColor(Color.black);
-		}
-	    }
-	}
+                    if (filled) g.setColor(Color.black);
+                }
+            }
+        }
     }
 
 
@@ -560,8 +566,8 @@ public class JTetris extends JComponent {
        speed slider.
     */
     public void updateTimer() {
-	double value = ((double)speed.getValue())/speed.getMaximum();
-	timer.setDelay((int)(DELAY - value*DELAY));
+        double value = ((double)speed.getValue())/speed.getMaximum();
+        timer.setDelay((int)(DELAY - value*DELAY));
     }
 
 
@@ -572,60 +578,60 @@ public class JTetris extends JComponent {
        of ugly code less necessary.
     */
     public java.awt.Container createControlPanel() {
-	java.awt.Container panel = Box.createVerticalBox();
+        java.awt.Container panel = Box.createVerticalBox();
 
-	// COUNT
-	countLabel = new JLabel("0");
-	panel.add(countLabel);
+        // COUNT
+        countLabel = new JLabel("0");
+        panel.add(countLabel);
 
-	// TIME
-	timeLabel = new JLabel(" ");
-	panel.add(timeLabel);
+        // TIME
+        timeLabel = new JLabel(" ");
+        panel.add(timeLabel);
 
-	panel.add(Box.createVerticalStrut(12));
+        panel.add(Box.createVerticalStrut(12));
 
-	// START button
-	startButton = new JButton("Start");
-	panel.add(startButton);
-	startButton.addActionListener( new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    startGame();
-		}
-	    });
+        // START button
+        startButton = new JButton("Start");
+        panel.add(startButton);
+        startButton.addActionListener( new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                startGame();
+            }
+        });
 
-	// STOP button
-	stopButton = new JButton("Stop");
-	panel.add(stopButton);
-	stopButton.addActionListener( new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    stopGame();
-		}
-	    });
+        // STOP button
+        stopButton = new JButton("Stop");
+        panel.add(stopButton);
+        stopButton.addActionListener( new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                stopGame();
+            }
+        });
 
-	enableButtons();
+        enableButtons();
 
-	JPanel row = new JPanel();
+        JPanel row = new JPanel();
 
-	// SPEED slider
-	panel.add(Box.createVerticalStrut(12));
-	row.add(new JLabel("Speed:"));
-	speed = new JSlider(0, 200, 75);	// min, max, current
-	speed.setPreferredSize(new Dimension(100,15));
-	if (testMode) speed.setValue(200);	// max for test mode
+        // SPEED slider
+        panel.add(Box.createVerticalStrut(12));
+        row.add(new JLabel("Speed:"));
+        speed = new JSlider(0, 200, 75);	// min, max, current
+        speed.setPreferredSize(new Dimension(100,15));
+        if (testMode) speed.setValue(200);	// max for test mode
 
-	updateTimer();
-	row.add(speed);
+        updateTimer();
+        row.add(speed);
 
-	panel.add(row);
-	speed.addChangeListener( new ChangeListener() {
-		// when the slider changes, sync the timer to its value
-		public void stateChanged(ChangeEvent e) {
-		    updateTimer();
-		}
-	    });
+        panel.add(row);
+        speed.addChangeListener( new ChangeListener() {
+            // when the slider changes, sync the timer to its value
+            public void stateChanged(ChangeEvent e) {
+                updateTimer();
+            }
+        });
 
 
-	return(panel);
+        return(panel);
     }
 
 
@@ -639,56 +645,56 @@ public class JTetris extends JComponent {
     public static void main(String[] args)
 
     {
-	JFrame frame = new JFrame("Tetris 2000");
-	JComponent container = (JComponent)frame.getContentPane();
-	container.setLayout(new BorderLayout());
+        JFrame frame = new JFrame("Tetris 2000");
+        JComponent container = (JComponent)frame.getContentPane();
+        container.setLayout(new BorderLayout());
 
         // Set the metal look and feel
         try {
             UIManager.
-		setLookAndFeel(
-			       UIManager.
-			       getCrossPlatformLookAndFeelClassName() );
+            setLookAndFeel(
+                UIManager.
+                getCrossPlatformLookAndFeelClassName() );
         }
         catch (Exception ignored) {}
 
-	// Could create a JTetris or JBrainTetris here
-	final int pixels = 16;
-	JTetris tetris = new JTetris(WIDTH*pixels+2, 
-				     (HEIGHT+TOP_SPACE)*pixels+2);
+        // Could create a JTetris or JBrainTetris here
+        final int pixels = 16;
+        JTetris tetris = new JTetris(WIDTH*pixels+2,
+                                     (HEIGHT+TOP_SPACE)*pixels+2);
 
 
-	container.add(tetris, BorderLayout.CENTER);
+        container.add(tetris, BorderLayout.CENTER);
 
 
-	if (args.length != 0 && args[0].equals("test")) {
-	    tetris.testMode = true;
-	}
+        if (args.length != 0 && args[0].equals("test")) {
+            tetris.testMode = true;
+        }
 
-	Container panel = tetris.createControlPanel();
+        Container panel = tetris.createControlPanel();
 
-	// Add the quit button last so it's at the bottom
-	panel.add(Box.createVerticalStrut(12));
-	JButton quit = new JButton("Quit");
-	panel.add(quit);
-	quit.addActionListener( new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    System.exit(0);
-		}
-	    });
+        // Add the quit button last so it's at the bottom
+        panel.add(Box.createVerticalStrut(12));
+        JButton quit = new JButton("Quit");
+        panel.add(quit);
+        quit.addActionListener( new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
 
-	container.add(panel, BorderLayout.EAST);
-	frame.pack();
-	frame.setVisible(true);
+        container.add(panel, BorderLayout.EAST);
+        frame.pack();
+        frame.setVisible(true);
 
-	// Quit on window close
-	frame.addWindowListener(
-				new WindowAdapter() {
-				    public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				    }
-				}
-				);
+        // Quit on window close
+        frame.addWindowListener(
+        new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        }
+        );
     }
 }

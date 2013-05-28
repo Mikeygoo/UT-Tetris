@@ -18,12 +18,13 @@ public abstract class Piece {
     // These Strings represent the seven type of pieces that are used
     // to play Tetris.
     static protected String[] pieceStrings = { "0 0  0 1  0 2  0 3",
-					       "0 0  0 1  0 2  1 0", 
-					       "0 0  1 0  1 1  1 2", 
-					       "0 0  1 0  1 1  2 1",
-					       "0 1  1 1  1 0  2 0", 
-					       "0 0  0 1  1 0  1 1", 
-					       "0 0  1 0  1 1  2 0"};
+                              "0 0  0 1  0 2  1 0",
+                              "0 0  1 0  1 1  1 2",
+                              "0 0  1 0  1 1  2 1",
+                              "0 1  1 1  1 0  2 0",
+                              "0 0  0 1  1 0  1 1",
+                              "0 0  1 0  1 1  2 0"
+                                             };
 
 
     /**
@@ -64,7 +65,7 @@ public abstract class Piece {
        to the next in constant time.
     */
     public Piece nextRotation() {
-	return next;
+        return next;
     }
 
 
@@ -85,24 +86,24 @@ public abstract class Piece {
        (Provided code)
     */
     protected static Point[] parsePoints(String string) {
-	// could use Arraylist here, but use vector so works on Java 1.1
-	Vector points = new Vector();
-	StringTokenizer tok = new StringTokenizer(string);
-	try {
-	    while(tok.hasMoreTokens()) {
-		int x = Integer.parseInt(tok.nextToken());
-		int y = Integer.parseInt(tok.nextToken());
+        // could use Arraylist here, but use vector so works on Java 1.1
+        Vector points = new Vector();
+        StringTokenizer tok = new StringTokenizer(string);
+        try {
+            while(tok.hasMoreTokens()) {
+                int x = Integer.parseInt(tok.nextToken());
+                int y = Integer.parseInt(tok.nextToken());
 
-		points.addElement(new Point(x, y));
-	    }
-	}
-	catch (NumberFormatException e) {
-	    throw new RuntimeException("Could not parse x,y string:" + string);
-	}
+                points.addElement(new Point(x, y));
+            }
+        }
+        catch (NumberFormatException e) {
+            throw new RuntimeException("Could not parse x,y string:" + string);
+        }
 
-	// Make an array out of the Vector
-	Point[] array = new Point[points.size()];
-	points.copyInto(array);
-	return(array);
+        // Make an array out of the Vector
+        Point[] array = new Point[points.size()];
+        points.copyInto(array);
+        return(array);
     }
 }
