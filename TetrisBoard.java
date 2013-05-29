@@ -236,10 +236,10 @@ public class TetrisBoard implements Board {
     */
     public void undo() {
         if (!primed) {
-            System.out.println("Not primed in undo!");
+            //System.out.println("Not primed in undo!");
             return;
         } else {
-            System.out.println("Prime undone!");
+            //System.out.println("Prime undone!");
         }
         primed = false;
         for (int x = 0; x < width; x++)
@@ -256,10 +256,10 @@ public class TetrisBoard implements Board {
     */
     public void commit() {
         if (!primed) {
-            System.out.println("Not primed in commit!");
+            //System.out.println("Not primed in commit!");
             return;
         } else {
-            System.out.println("Prime committed.");
+            //System.out.println("Prime committed.");
         }
         primed = false;
     }

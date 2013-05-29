@@ -46,7 +46,7 @@ public class JTetris extends JComponent {
 
 
     // Is drawing optimized
-    protected boolean DRAW_OPTIMIZE = true;
+    protected boolean DRAW_OPTIMIZE = false;
 
     // Board data structures
     protected Board board;
