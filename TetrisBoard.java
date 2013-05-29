@@ -16,9 +16,13 @@ import java.util.*;
    @version	1.0.1, Sep 19, 2004
 */
 public class TetrisBoard implements Board {
-    private boolean[][] grid;
+    private static final boolean DEBUG = true;
+    private boolean[][] grid, backupGrid;
+    private int maxHeight = -1, backupMaxHeight = -1;
+    private int[] rowWidths, backupRowWidths;
+    private int[] columnHeights, backupColumnHeights;
     private int width, height;
-    private boolean DEBUG = true;
+    private boolean primed = false;
 
 
     /**
@@ -26,9 +30,18 @@ public class TetrisBoard implements Board {
        measured in blocks.
     */
     public TetrisBoard(int width, int height) {
-        grid = new boolean[width][height];
         this.width = width;
         this.height = height;
+        grid = new boolean[width][height];
+        backupGrid = new boolean[width][height];
+        rowWidths = new int[height];
+        Arrays.fill(rowWidths, -1);
+        backupRowWidths = new int[height];
+        Arrays.fill(backupRowWidths, -1);
+        columnHeights = new int[width];
+        Arrays.fill(columnHeights, -1);
+        backupColumnHeights = new int[width];
+        Arrays.fill(backupColumnHeights, -1);
     }
 
 
@@ -53,8 +66,15 @@ public class TetrisBoard implements Board {
        For an empty board this is 0.
     */
     public int getMaxHeight() {
-        // your code here
-        return -1;
+        if (maxHeight != -1)
+            return maxHeight;
+        int mh = 0;
+        for (int x = 0; x < width; x++) {
+            int ch = getColumnHeight(x);
+            if (mh < ch)
+                mh = ch;
+        }
+        return maxHeight = mh;
     }
 
 
@@ -78,8 +98,14 @@ public class TetrisBoard implements Board {
        to compute this fast -- O(skirt length).
     */
     public int dropHeight(Piece piece, int x) {
-        // your code here
-        return -1;
+        int[] skirt = piece.getSkirt();
+        int max = 0;
+        for (int ix = 0; ix < skirt.length; ix++) {
+            int local = getColumnHeight(x + ix) - skirt[ix];
+            if (max < local)
+                max = local;
+        }
+        return max;
     }
 
 
@@ -89,8 +115,12 @@ public class TetrisBoard implements Board {
        The height is 0 if the column contains no blocks.
     */
     public int getColumnHeight(int x) {
-        // your code here
-        return -1;
+        if (columnHeights[x] != -1)
+            return columnHeights[x];
+        for (int y = height - 1; y >= 0; y--)
+            if (getGrid(x, y))
+                return columnHeights[x] = y + 1;
+        return columnHeights[x] = 0;
     }
 
 
@@ -99,8 +129,13 @@ public class TetrisBoard implements Board {
        the given row.
     */
     public int getRowWidth(int y) {
-        // your code here
-        return -1;
+        if (rowWidths[y] != -1)
+            return rowWidths[y];
+        int a = 0;
+        for (int x = 0; x < width; x++)
+            if (getGrid(x, y))
+                a++;
+        return rowWidths[y] = a;
     }
 
 
@@ -136,22 +171,32 @@ public class TetrisBoard implements Board {
        remove the bad placement.
     */
     public int place(Piece piece, int x, int y) {
-        if (primed) {
-            //todo: error case omg?
-        }
         prime();
+        maxHeight = -1;
         for (Point p : piece.getBody()) {
-            if (getGrid(x + p.x, y + p.y)) {
-                if (outOfBounds(x + p.x, y + p.y)) {
+            int px = p.x + x;
+            int py = p.y + y;
+            // ^ I have to make the old values "stale"
+            if (getGrid(px, py)) {
+                if (px < 0 || py < 0 || px >= width || py >= height) {
+                    System.out.println("Placement out of bounds.");
                     return PLACE_OUT_BOUNDS;
                 } else {
+                    System.out.println("Placement bad.");
                     return PLACE_BAD;
                 }
             } else {
-                grid[x + p.x][y + p.y] = true;
+                rowWidths[py] = -1;
+                columnHeights[px] = -1;
+                grid[px][py] = true;
             }
         }
-        return foundRowFilled() ? PLACE_ROW_FILLED : PLACE_OK;
+        
+        for (int i = 0; i < height; i++)
+            if (getRowWidth(i) == width)
+                return PLACE_ROW_FILLED;
+        
+        return PLACE_OK;
     }
 
     /**
@@ -164,8 +209,20 @@ public class TetrisBoard implements Board {
        Note that more than one row may be filled.
     */
     public boolean clearRows() {
-        // your code here
-        return false;
+        Arrays.fill(rowWidths, -1); //todo: more efficient way for these two? VV
+        Arrays.fill(columnHeights, -1);
+        
+        int offset = 0;
+        for (int y = 0; y < height; y++) {
+            if (getRowWidth(y) == width) {
+                offset++;
+            } else {
+                for (int x = 0; x < width; x++)
+                    grid[x][y - offset] = grid[x][y];
+            }
+        }
+        
+        return offset > 0;
     }
 
 
@@ -178,7 +235,18 @@ public class TetrisBoard implements Board {
        See the overview docs.
     */
     public void undo() {
-        // your code here
+        if (!primed) {
+            System.out.println("Not primed in undo!");
+            return;
+        } else {
+            System.out.println("Prime undone!");
+        }
+        primed = false;
+        for (int x = 0; x < width; x++)
+            System.arraycopy(backupGrid[x], 0, grid[x], 0, height);
+        System.arraycopy(backupRowWidths, 0, rowWidths, 0, height);
+        System.arraycopy(backupColumnHeights, 0, columnHeights, 0, width);
+        maxHeight = backupMaxHeight;
     }
 
 
@@ -187,6 +255,21 @@ public class TetrisBoard implements Board {
        See the overview docs.
     */
     public void commit() {
-        // your code here
+        if (!primed) {
+            System.out.println("Not primed in commit!");
+            return;
+        } else {
+            System.out.println("Prime committed.");
+        }
+        primed = false;
+    }
+    
+    private void prime() {
+        primed = true;
+        for (int x = 0; x < width; x++)
+            System.arraycopy(grid[x], 0, backupGrid[x], 0, height);
+        System.arraycopy(rowWidths, 0, backupRowWidths, 0, height);
+        System.arraycopy(columnHeights, 0, backupColumnHeights, 0, width);
+        backupMaxHeight = maxHeight;
     }
 }
